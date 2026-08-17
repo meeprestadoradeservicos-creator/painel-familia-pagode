@@ -1,8 +1,96 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Família Pagode • Equipe Tenebrosa</title><style>
-*{box-sizing:border-box}body{margin:0;background:#070403;color:#fff;font-family:Arial,sans-serif;min-height:100vh}body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 10%,#8b3d0c55,transparent 35%),linear-gradient(#090504,#160805,#050303);z-index:-2}.wrap{max-width:1200px;margin:auto;padding:20px}.hero{display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:center;gap:10px}.crest{width:100%;max-height:330px;object-fit:contain;filter:drop-shadow(0 12px 18px #000)}.center{text-align:center}.welcome{font-family:cursive;font-size:28px;margin:0}.title{font-size:clamp(42px,7vw,88px);font-weight:1000;line-height:.85;letter-spacing:-4px;color:#ffc126;text-shadow:0 5px 18px #ff8c0044;margin:0}.sub{display:inline-block;margin-top:15px;padding:9px 24px;border:1px solid #ffc126;border-radius:30px;background:#050505aa;font-weight:900;letter-spacing:2px}.slogan{font-family:cursive;font-size:30px;margin:15px 0}.slogan b{color:#ffc126}.player{max-width:780px;margin:10px auto;padding:22px;border:1px solid #ffc12699;border-radius:25px;background:#0c0806ee;box-shadow:0 0 35px #ff6b0022}.live{text-align:center;color:#ff5147;font-weight:900;letter-spacing:3px}.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:#ff281e;box-shadow:0 0 14px #ff281e;animation:p 1s infinite}@keyframes p{50%{transform:scale(1.5);opacity:.5}}.now{text-align:center;margin:14px}.dj{color:#ffd86b;font-size:21px;font-weight:900}.track{font-size:22px;font-weight:bold;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.eq{height:125px;display:flex;align-items:flex-end;justify-content:center;gap:5px}.bar{width:7px;height:20px;border-radius:8px;background:linear-gradient(#ffe28a,#ff9b00,#d71920);animation:b .55s infinite alternate ease-in-out;animation-delay:calc(var(--i)*-0.035s)}@keyframes b{to{height:var(--h)}}button{border:0;border-radius:30px;padding:15px 30px;background:linear-gradient(#ffd34f,#df8a00);font-weight:1000;font-size:18px;cursor:pointer;display:block;margin:auto}.status{text-align:center;color:#aaa;font-size:13px;margin-top:10px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.card{padding:15px;text-align:center;border:1px solid #ffc12655;border-radius:15px;background:#140a06cc}.card b{display:block;color:#ffc126;margin-bottom:4px}.bottom{text-align:center;padding:25px 5px;font-weight:bold;font-size:25px}.bottom span{color:#e31b23}.bottom small{display:block;color:#ddd;font-size:15px;margin-top:8px}@media(max-width:800px){.hero{grid-template-columns:1fr 1fr}.center{grid-column:1/-1;grid-row:1}.crest{max-height:220px}.cards{grid-template-columns:1fr 1fr}}@media(max-width:520px){.hero{grid-template-columns:1fr 1fr}.crest{max-height:160px}.slogan{font-size:22px}.eq{height:90px}.bar{width:5px}.cards{grid-template-columns:1fr 1fr}}
-</style></head><body><main class="wrap"><section class="hero"><img class="crest" src="brasao-familia-pagode.png"><div class="center"><p class="welcome">Seja bem-vindo à</p><h1 class="title">FAMÍLIA<br>PAGODE</h1><div class="sub">EQUIPE TENEBROSA</div><p class="slogan">Aqui o pagode <b>não para!</b></p></div><img class="crest" src="brasao-tenebrosa.png"></section><section class="player"><div class="live"><span class="dot"></span> RÁDIO AO VIVO</div><div class="now"><div id="dj" class="dj">🎧 Consultando transmissão...</div><div id="track" class="track">🎵 Carregando música...</div></div><div id="eq" class="eq"></div><audio id="audio" preload="none"></audio><button id="play">▶ OUVIR AGORA</button><div id="status" class="status">Conectando aos dados da rádio...</div></section><section class="cards"><div class="card"><b>🎵 MÚSICA</b>de qualidade</div><div class="card"><b>❤️ ALEGRIA</b>que contagia</div><div class="card"><b>🥁 AMIZADE</b>que fica</div><div class="card"><b>🎉 DIVERSÃO</b>sem limites</div></section><section class="bottom">FAMÍLIA PAGODE <span>E</span> EQUIPE TENEBROSA<small>🔥 Juntos levando música, alegria e diversão! • Aumenta o som e vem curtir com a gente! 🔥</small></section></main><script>
-const API='https://azura5.cmaudioevideo.com/api/nowplaying/equipe_tenebrosa';const audio=document.querySelector('#audio'),play=document.querySelector('#play'),status=document.querySelector('#status');let stream='';
-for(let i=0;i<48;i++){let x=document.createElement('i');x.className='bar';x.style.setProperty('--i',i);x.style.setProperty('--h',(15+Math.random()*100)+'px');document.querySelector('#eq').appendChild(x)}
-async function update(){try{let r=await fetch(API,{cache:'no-store'});if(!r.ok)throw 0;let d=await r.json(),s=d.now_playing?.song||{},live=d.live?.is_live,who=d.live?.streamer_name||d.live?.streamer_display_name;document.querySelector('#dj').textContent=live&&who?'🎧 AO VIVO: '+who:'🎧 AUTO DJ / PROGRAMAÇÃO';document.querySelector('#track').textContent='🎵 '+((s.artist?s.artist+' — ':'')+(s.title||'Rádio ao vivo'));if(!stream&&d.station?.listen_url){stream=d.station.listen_url;audio.src=stream}status.textContent='Rádio conectada • atualização automática'}catch(e){status.textContent='Não foi possível consultar a API agora. Tente novamente em alguns segundos.'}}
-play.onclick=async()=>{if(!stream)await update();try{await audio.play();play.textContent='⏸ PAUSAR RÁDIO';status.textContent='🔴 Você está ouvindo a Família Pagode!'}catch(e){status.textContent='O navegador bloqueou o áudio. Clique novamente em OUVIR AGORA.'}};audio.onpause=()=>play.textContent='▶ OUVIR AGORA';audio.onplaying=()=>play.textContent='⏸ PAUSAR RÁDIO';update();setInterval(update,15000);
-</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Família Pagode • Equipe Tenebrosa</title>
+<style>
+body{margin:0;background:#080403;color:#fff;font-family:Arial,sans-serif;text-align:center}
+main{max-width:900px;margin:auto;padding:20px}
+h1{font-size:clamp(40px,7vw,76px);color:#ffd45a;margin:10px}
+.sub{color:#fff;border:1px solid #ffd45a;border-radius:30px;display:inline-block;padding:8px 22px;font-weight:bold}
+.player{margin-top:20px;padding:25px;border:1px solid #ffd45a;border-radius:25px;background:#120906}
+.live{color:#ff5148;font-weight:bold;letter-spacing:3px}.dot{display:inline-block;width:10px;height:10px;background:red;border-radius:50%}
+#dj{color:#ffd45a;font-size:24px;font-weight:bold;margin-top:18px}
+#track{font-size:22px;font-weight:bold;margin:8px}
+#eq{height:150px;display:flex;align-items:end;justify-content:center;gap:5px}
+.bar{width:7px;background:linear-gradient(#fff1a8,#ffad00,#d71920);border-radius:8px 8px 2px 2px;height:10px}
+button{margin:15px;padding:15px 30px;border:0;border-radius:30px;background:#ffd45a;font-size:18px;font-weight:bold;cursor:pointer}
+#status{color:#bbb;font-size:13px}
+footer{margin-top:25px;color:#ddd}
+</style>
+</head>
+<body>
+<main>
+<h1>FAMÍLIA PAGODE</h1>
+<div class="sub">EQUIPE TENEBROSA</div>
+<p>🎶 Aqui o pagode não para! 🎶</p>
+<section class="player">
+<div class="live"><span class="dot"></span> RÁDIO AO VIVO</div>
+<div id="dj">🎧 Consultando transmissão...</div>
+<div id="track">🎵 Carregando música...</div>
+<div id="eq"></div>
+<button id="play">▶ OUVIR AGORA</button>
+<div id="status">Conectando à rádio...</div>
+<audio id="audio" preload="none" crossorigin="anonymous"></audio>
+</section>
+<footer>🔥 Música • Alegria • Amizade • Festa 🔥</footer>
+</main>
+<script>
+const API='https://azura5.cmaudioevideo.com/api/nowplaying/equipe_tenebrosa';
+const STATIC='https://azura5.cmaudioevideo.com/api/nowplaying_static/equipe_tenebrosa.json';
+const audio=document.getElementById('audio'),btn=document.getElementById('play'),eq=document.getElementById('eq');
+const dj=document.getElementById('dj'),track=document.getElementById('track'),status=document.getElementById('status');
+let streamUrl='',ctx=null,analyser=null,data=null,source=null,raf=null;
+for(let i=0;i<48;i++){let b=document.createElement('span');b.className='bar';eq.appendChild(b)}
+
+function text(v){return v==null?'':String(v)}
+function update(d){
+ const s=d?.now_playing?.song||{}, live=d?.live?.is_live;
+ const name=d?.live?.streamer_name||d?.live?.streamer_display_name;
+ dj.textContent=live&&name?'🎧 AO VIVO: '+text(name):'🎧 AUTO DJ / PROGRAMAÇÃO';
+ track.textContent='🎵 '+((s.artist?text(s.artist)+' — ':'')+(s.title?text(s.title):'Rádio ao vivo'));
+ if(!streamUrl&&d?.station?.listen_url){streamUrl=d.station.listen_url;audio.src=streamUrl}
+ status.textContent='Rádio conectada • atualização automática';
+}
+async function now(){
+ try{let r=await fetch(API,{cache:'no-store'});if(!r.ok)throw 0;update(await r.json())}
+ catch(e){try{let r=await fetch(STATIC,{cache:'no-store'});if(!r.ok)throw 0;update(await r.json())}catch(x){status.textContent='Aguardando conexão com os dados da rádio...'}}
+}
+async function analyzer(){
+ if(analyser)return true;
+ try{
+  ctx=new(window.AudioContext||window.webkitAudioContext)();
+  source=ctx.createMediaElementSource(audio);
+  analyser=ctx.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.7;
+  source.connect(analyser);analyser.connect(ctx.destination);data=new Uint8Array(analyser.frequencyBinCount);
+  return true
+ }catch(e){return false}
+}
+function draw(){
+ if(!analyser)return;
+ analyser.getByteFrequencyData(data);
+ [...eq.children].forEach((b,i)=>{let v=data[Math.floor(i*data.length/eq.children.length)]||0;b.style.height=(6+v*.45)+'px';b.style.opacity=.45+v/510});
+ raf=requestAnimationFrame(draw)
+}
+async function start(){
+ if(!streamUrl)await now();
+ if(!audio.src&&streamUrl)audio.src=streamUrl;
+ try{
+  let ok=await analyzer();
+  if(ctx?.state==='suspended')await ctx.resume();
+  await audio.play();
+  if(ok){cancelAnimationFrame(raf);draw();status.textContent='🔴 Rádio tocando • equalizador ativo'}
+  btn.textContent='⏸ PAUSAR RÁDIO';
+ }catch(e){status.textContent='Clique novamente em OUVIR AGORA para iniciar.'}
+}
+function pause(){
+ audio.pause();cancelAnimationFrame(raf);btn.textContent='▶ OUVIR AGORA';status.textContent='Rádio pausada.'
+}
+btn.onclick=()=>audio.paused?start():pause();
+audio.onplaying=()=>btn.textContent='⏸ PAUSAR RÁDIO';
+audio.onpause=()=>btn.textContent='▶ OUVIR AGORA';
+now();setInterval(now,15000);
+</script>
+</body>
+</html>
