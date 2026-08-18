@@ -1,96 +1,1171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Família Pagode • Equipe Tenebrosa</title>
+
 <style>
-body{margin:0;background:#080403;color:#fff;font-family:Arial,sans-serif;text-align:center}
-main{max-width:900px;margin:auto;padding:20px}
-h1{font-size:clamp(40px,7vw,76px);color:#ffd45a;margin:10px}
-.sub{color:#fff;border:1px solid #ffd45a;border-radius:30px;display:inline-block;padding:8px 22px;font-weight:bold}
-.player{margin-top:20px;padding:25px;border:1px solid #ffd45a;border-radius:25px;background:#120906}
-.live{color:#ff5148;font-weight:bold;letter-spacing:3px}.dot{display:inline-block;width:10px;height:10px;background:red;border-radius:50%}
-#dj{color:#ffd45a;font-size:24px;font-weight:bold;margin-top:18px}
-#track{font-size:22px;font-weight:bold;margin:8px}
-#eq{height:150px;display:flex;align-items:end;justify-content:center;gap:5px}
-.bar{width:7px;background:linear-gradient(#fff1a8,#ffad00,#d71920);border-radius:8px 8px 2px 2px;height:10px}
-button{margin:15px;padding:15px 30px;border:0;border-radius:30px;background:#ffd45a;font-size:18px;font-weight:bold;cursor:pointer}
-#status{color:#bbb;font-size:13px}
-footer{margin-top:25px;color:#ddd}
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
+}
+
+body{
+    overflow-x:hidden;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(226,29,43,.30),transparent 30%),
+        radial-gradient(circle at 10% 55%,rgba(255,160,0,.16),transparent 25%),
+        linear-gradient(180deg,#180806,#030303 75%);
+}
+
+/* PARTICULAS */
+body::before{
+    content:"";
+    position:fixed;
+    inset:-10%;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+        radial-gradient(circle,rgba(255,220,120,.8) 0 1px,transparent 1.5px);
+    background-size:58px 58px;
+    opacity:.20;
+    animation:particulas 18s linear infinite;
+}
+
+@keyframes particulas{
+    from{
+        transform:translate(0,0);
+    }
+    to{
+        transform:translate(58px,58px);
+    }
+}
+
+/* LUZES */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background:
+        radial-gradient(circle at 20% 30%,rgba(255,170,0,.13),transparent 22%),
+        radial-gradient(circle at 80% 65%,rgba(226,29,43,.13),transparent 24%);
+    filter:blur(25px);
+    animation:luzes 7s ease-in-out infinite alternate;
+}
+
+@keyframes luzes{
+    from{
+        opacity:.5;
+    }
+    to{
+        opacity:1;
+        transform:scale(1.06);
+    }
+}
+
+.container{
+    position:relative;
+    z-index:1;
+    width:94%;
+    max-width:1180px;
+    margin:auto;
+    padding:15px 0 35px;
+}
+
+/* LINHA SUPERIOR */
+
+.linha{
+    height:3px;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #ffd45a,
+            #e21d2b,
+            #ffd45a,
+            transparent
+        );
+
+    box-shadow:0 0 25px rgba(255,180,40,.8);
+}
+
+/* CABEÇALHO */
+
+.cabecalho{
+    display:grid;
+    grid-template-columns:220px 1fr 220px;
+    align-items:center;
+    gap:18px;
+    padding:15px 0;
+}
+
+.brasao{
+    width:100%;
+    height:220px;
+    object-fit:contain;
+    filter:drop-shadow(0 10px 18px black);
+    animation:brasaoAnim 3.5s ease-in-out infinite;
+}
+
+.brasao:last-child{
+    animation-delay:1.2s;
+}
+
+@keyframes brasaoAnim{
+
+    50%{
+        transform:
+            translateY(-4px)
+            scale(1.02);
+
+        filter:
+            drop-shadow(0 0 25px rgba(255,190,40,.35));
+    }
+
+}
+
+.titulo{
+    text-align:center;
+}
+
+.pequeno{
+    margin:0 0 8px;
+    font-size:12px;
+    letter-spacing:4px;
+    font-weight:bold;
+    color:#ddd;
+}
+
+h1{
+    margin:0;
+
+    font-size:
+        clamp(38px,6vw,76px);
+
+    line-height:.85;
+
+    letter-spacing:-3px;
+
+    background:
+        linear-gradient(
+            #fff4ba,
+            #ffd45a 45%,
+            #c86d00
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.equipe{
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:8px 20px;
+
+    border:1px solid #ffd45a;
+
+    border-radius:999px;
+
+    background:#050505;
+
+    letter-spacing:3px;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 20px rgba(255,170,0,.15);
+}
+
+.frase{
+    margin-top:15px;
+
+    font-family:cursive;
+
+    font-size:
+        clamp(19px,3vw,31px);
+
+    text-shadow:
+        0 2px 12px black;
+}
+
+.frase span{
+    color:#ffd45a;
+}
+
+/* PLAYER */
+
+.player{
+    max-width:900px;
+
+    margin:10px auto 0;
+
+    padding:24px;
+
+    border-radius:28px;
+
+    border:
+        1px solid rgba(255,212,90,.65);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(31,12,8,.95),
+            rgba(4,4,4,.97)
+        );
+
+    box-shadow:
+        0 0 55px rgba(226,29,43,.15),
+        inset 0 0 35px rgba(255,190,0,.04);
+}
+
+/* AO VIVO */
+
+.ao-vivo{
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#ff655f;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+}
+
+.ponto{
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#ff241b;
+
+    box-shadow:
+        0 0 18px #ff241b;
+
+    animation:pulsar 1s infinite;
+}
+
+@keyframes pulsar{
+
+    50%{
+        transform:scale(1.6);
+        opacity:.4;
+    }
+
+}
+
+/* INFORMAÇÕES */
+
+.info{
+    text-align:center;
+
+    min-height:90px;
+
+    padding-top:14px;
+}
+
+.dj{
+    color:#ffd45a;
+
+    font-size:
+        clamp(18px,2.5vw,27px);
+
+    font-weight:bold;
+}
+
+.musica{
+    margin-top:8px;
+
+    font-size:
+        clamp(18px,2.8vw,29px);
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+/* EQUALIZADOR */
+
+.equalizador{
+
+    height:150px;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    gap:5px;
+
+    padding:
+        12px 0 18px;
+}
+
+.bar{
+
+    width:7px;
+
+    height:5px;
+
+    border-radius:
+        8px 8px 2px 2px;
+
+    background:
+        linear-gradient(
+            #fff3ad,
+            #ffae00,
+            #d71920
+        );
+
+    box-shadow:
+        0 0 9px rgba(255,112,0,.35);
+
+    transition:
+        height .07s linear,
+        opacity .15s linear;
+}
+
+/* EQUALIZADOR PARADO */
+
+.equalizador.caindo .bar{
+
+    height:5px !important;
+
+    opacity:.12;
+
+    transition:
+        height .8s ease-out,
+        opacity .8s ease-out;
+}
+
+/* BOTAO */
+
+.controle{
+    text-align:center;
+}
+
+.botao{
+
+    border:0;
+
+    cursor:pointer;
+
+    border-radius:999px;
+
+    padding:
+        15px 34px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#1b0900;
+
+    background:
+        linear-gradient(
+            #ffe28a,
+            #ffad00
+        );
+
+    box-shadow:
+        0 8px 25px
+        rgba(255,145,0,.25);
+
+    transition:.2s;
+}
+
+.botao:hover{
+
+    transform:translateY(-2px);
+
+    filter:brightness(1.1);
+}
+
+.status{
+
+    margin-top:10px;
+
+    color:#aaa;
+
+    font-size:13px;
+}
+
+/* CARDS */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+
+    max-width:900px;
+
+    margin:17px auto 0;
+}
+
+.card{
+
+    padding:13px 7px;
+
+    text-align:center;
+
+    border-radius:14px;
+
+    border:
+        1px solid
+        rgba(255,212,90,.25);
+
+    background:
+        rgba(20,10,7,.72);
+
+    font-weight:bold;
+}
+
+.card strong{
+
+    display:block;
+
+    color:#ffd45a;
+
+    font-size:12px;
+
+    margin-bottom:4px;
+}
+
+/* RODAPE */
+
+.rodape{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    padding:18px 5px;
+
+    border-top:
+        1px solid
+        rgba(255,212,90,.2);
+}
+
+.rodape .grande{
+
+    font-weight:bold;
+
+    font-size:
+        clamp(19px,3vw,29px);
+}
+
+.rodape p{
+
+    color:#d5d5d5;
+
+    margin:7px 0;
+}
+
+/* CELULAR */
+
+@media(max-width:800px){
+
+    .cabecalho{
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .titulo{
+
+        grid-column:
+            1 / -1;
+
+        grid-row:1;
+    }
+
+    .brasao{
+
+        height:175px;
+    }
+
+    .cards{
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+}
+
+@media(max-width:520px){
+
+    .container{
+        width:96%;
+    }
+
+    .brasao{
+        height:145px;
+    }
+
+    .player{
+        padding:15px;
+    }
+
+    .equalizador{
+
+        height:110px;
+
+        gap:3px;
+    }
+
+    .bar{
+        width:5px;
+    }
+
+}
 </style>
 </head>
-<body>
-<main>
-<h1>FAMÍLIA PAGODE</h1>
-<div class="sub">EQUIPE TENEBROSA</div>
-<p>🎶 MÚSICA BOA, ALEGRIA SEM LIMITES! 🎶</p>
-<section class="player">
-<div class="live"><span class="dot"></span> RÁDIO AO VIVO</div>
-<div id="dj">🎧 Consultando transmissão...</div>
-<div id="track">🎵 Carregando música...</div>
-<div id="eq"></div>
-<button id="play">▶ OUVIR AGORA</button>
-<div id="status">Conectando à rádio...</div>
-<audio id="audio" preload="none" crossorigin="anonymous"></audio>
-</section>
-<footer>🔥 Música • Alegria • Amizade • Festa 🔥</footer>
-</main>
-<script>
-const API='https://azura5.cmaudioevideo.com/api/nowplaying/equipe_tenebrosa';
-const STATIC='https://azura5.cmaudioevideo.com/api/nowplaying_static/equipe_tenebrosa.json';
-const audio=document.getElementById('audio'),btn=document.getElementById('play'),eq=document.getElementById('eq');
-const dj=document.getElementById('dj'),track=document.getElementById('track'),status=document.getElementById('status');
-let streamUrl='',ctx=null,analyser=null,data=null,source=null,raf=null;
-for(let i=0;i<48;i++){let b=document.createElement('span');b.className='bar';eq.appendChild(b)}
 
-function text(v){return v==null?'':String(v)}
-function update(d){
- const s=d?.now_playing?.song||{}, live=d?.live?.is_live;
- const name=d?.live?.streamer_name||d?.live?.streamer_display_name;
- dj.textContent=live&&name?'🎧 AO VIVO: '+text(name):'🎧 AUTO DJ / PROGRAMAÇÃO';
- track.textContent='🎵 '+((s.artist?text(s.artist)+' — ':'')+(s.title?text(s.title):'Rádio ao vivo'));
- if(!streamUrl&&d?.station?.listen_url){streamUrl=d.station.listen_url;audio.src=streamUrl}
- status.textContent='Rádio conectada • atualização automática';
+<body>
+
+<div class="container">
+
+<div class="linha"></div>
+
+<header class="cabecalho">
+
+<img
+class="brasao"
+src="brasao-familia-pagode.png"
+alt="Família Pagode"
+>
+
+<div class="titulo">
+
+<p class="pequeno">
+WEB RÁDIO OFICIAL
+</p>
+
+<h1>
+FAMÍLIA<br>
+PAGODE
+</h1>
+
+<div class="equipe">
+EQUIPE TENEBROSA
+</div>
+
+<p class="frase">
+🎶 <span>MÚSICA BOA, ALEGRIA SEM LIMITES!</span> 🎶
+</p>
+
+</div>
+
+<img
+class="brasao"
+src="brasao-tenebrosa.png"
+alt="Equipe Tenebrosa"
+>
+
+</header>
+
+
+<main class="player">
+
+<div class="ao-vivo">
+
+<span class="ponto"></span>
+
+RÁDIO AO VIVO
+
+</div>
+
+
+<div class="info">
+
+<div
+id="dj"
+class="dj"
+>
+🎧 Consultando transmissão...
+</div>
+
+<div
+id="musica"
+class="musica"
+>
+🎵 Carregando música...
+</div>
+
+</div>
+
+
+<div
+id="equalizador"
+class="equalizador"
+>
+</div>
+
+
+<div class="controle">
+
+<button
+id="botao"
+class="botao"
+>
+▶ OUVIR AGORA
+</button>
+
+<div
+id="status"
+class="status"
+>
+Conectando à rádio...
+</div>
+
+</div>
+
+
+<audio
+id="audio"
+preload="none"
+crossorigin="anonymous"
+></audio>
+
+</main>
+
+
+<section class="cards">
+
+<div class="card">
+<strong>🎵 MÚSICA</strong>
+para todos os gostos
+</div>
+
+<div class="card">
+<strong>❤️ ALEGRIA</strong>
+que contagia
+</div>
+
+<div class="card">
+<strong>🥁 AMIZADE</strong>
+que fica
+</div>
+
+<div class="card">
+<strong>🎉 DIVERSÃO</strong>
+sem limites
+</div>
+
+</section>
+
+
+<footer class="rodape">
+
+<div class="grande">
+🔥 FAMÍLIA PAGODE • EQUIPE TENEBROSA 🔥
+</div>
+
+<p>
+Aumenta o som e vem curtir com a gente!
+</p>
+
+<p>
+🎶 Música • Alegria • Amizade • Festa 🎶
+</p>
+
+</footer>
+
+</div>
+
+
+<script>
+
+const API =
+'https://azura5.cmaudioevideo.com/api/nowplaying/equipe_tenebrosa';
+
+const STATIC =
+'https://azura5.cmaudioevideo.com/api/nowplaying_static/equipe_tenebrosa.json';
+
+
+const audio =
+document.getElementById('audio');
+
+const botao =
+document.getElementById('botao');
+
+const equalizador =
+document.getElementById('equalizador');
+
+const dj =
+document.getElementById('dj');
+
+const musica =
+document.getElementById('musica');
+
+const status =
+document.getElementById('status');
+
+
+let streamUrl = '';
+
+let contexto = null;
+
+let analisador = null;
+
+let dados = null;
+
+let fonte = null;
+
+let animacao = null;
+
+let analisadorPronto = false;
+
+
+/* CRIA BARRAS */
+
+for(let i=0;i<48;i++){
+
+    const barra =
+    document.createElement('span');
+
+    barra.className='bar';
+
+    equalizador.appendChild(barra);
+
 }
-async function now(){
- try{let r=await fetch(API,{cache:'no-store'});if(!r.ok)throw 0;update(await r.json())}
- catch(e){try{let r=await fetch(STATIC,{cache:'no-store'});if(!r.ok)throw 0;update(await r.json())}catch(x){status.textContent='Aguardando conexão com os dados da rádio...'}}
+
+
+/* ATUALIZA INFORMACOES */
+
+function atualizar(dadosRadio){
+
+    if(!dadosRadio) return;
+
+    const song =
+    dadosRadio.now_playing?.song || {};
+
+    const aoVivo =
+    dadosRadio.live?.is_live;
+
+    const nomeDJ =
+    dadosRadio.live?.streamer_name ||
+    dadosRadio.live?.streamer_display_name;
+
+
+    if(aoVivo && nomeDJ){
+
+        dj.textContent =
+        '🎧 AO VIVO: ' + nomeDJ;
+
+    }else{
+
+        dj.textContent =
+        '🎧 AUTO DJ / PROGRAMAÇÃO';
+
+    }
+
+
+    const artista =
+    song.artist || '';
+
+    const titulo =
+    song.title || 'Rádio ao vivo';
+
+
+    musica.textContent =
+    '🎵 ' +
+    (artista ? artista + ' — ' : '') +
+    titulo;
+
+
+    if(
+        !streamUrl &&
+        dadosRadio.station?.listen_url
+    ){
+
+        streamUrl =
+        dadosRadio.station.listen_url;
+
+        audio.src =
+        streamUrl;
+
+    }
+
+
+    status.textContent =
+    'Rádio conectada • atualização automática';
+
 }
-async function analyzer(){
- if(analyser)return true;
- try{
-  ctx=new(window.AudioContext||window.webkitAudioContext)();
-  source=ctx.createMediaElementSource(audio);
-  analyser=ctx.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.7;
-  source.connect(analyser);analyser.connect(ctx.destination);data=new Uint8Array(analyser.frequencyBinCount);
-  return true
- }catch(e){return false}
+
+
+/* BUSCA AZURACAST */
+
+async function atualizarRadio(){
+
+    try{
+
+        const resposta =
+        await fetch(
+            API,
+            {cache:'no-store'}
+        );
+
+        if(!resposta.ok)
+            throw new Error();
+
+        atualizar(
+            await resposta.json()
+        );
+
+    }catch(e){
+
+        try{
+
+            const resposta =
+            await fetch(
+                STATIC,
+                {cache:'no-store'}
+            );
+
+            if(!resposta.ok)
+                throw new Error();
+
+            atualizar(
+                await resposta.json()
+            );
+
+        }catch(x){
+
+            status.textContent =
+            'Aguardando conexão com os dados da rádio...';
+
+        }
+
+    }
+
 }
-function draw(){
- if(!analyser)return;
- analyser.getByteFrequencyData(data);
- [...eq.children].forEach((b,i)=>{let v=data[Math.floor(i*data.length/eq.children.length)]||0;b.style.height=(6+v*.45)+'px';b.style.opacity=.45+v/510});
- raf=requestAnimationFrame(draw)
+
+
+/* PREPARA EQUALIZADOR */
+
+async function prepararEqualizador(){
+
+    if(analisadorPronto)
+        return true;
+
+    try{
+
+        contexto =
+        new(
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+
+
+        fonte =
+        contexto.createMediaElementSource(
+            audio
+        );
+
+
+        analisador =
+        contexto.createAnalyser();
+
+
+        analisador.fftSize =
+        256;
+
+
+        analisador.smoothingTimeConstant =
+        .72;
+
+
+        fonte.connect(analisador);
+
+        analisador.connect(
+            contexto.destination
+        );
+
+
+        dados =
+        new Uint8Array(
+            analisador.frequencyBinCount
+        );
+
+
+        analisadorPronto =
+        true;
+
+
+        return true;
+
+    }catch(e){
+
+        return false;
+
+    }
+
 }
-async function start(){
- if(!streamUrl)await now();
- if(!audio.src&&streamUrl)audio.src=streamUrl;
- try{
-  let ok=await analyzer();
-  if(ctx?.state==='suspended')await ctx.resume();
-  await audio.play();
-  if(ok){cancelAnimationFrame(raf);draw();status.textContent='🔴 Rádio tocando • equalizador ativo'}
-  btn.textContent='⏸ PAUSAR RÁDIO';
- }catch(e){status.textContent='Clique novamente em OUVIR AGORA para iniciar.'}
+
+
+/* ANIMA EQUALIZADOR */
+
+function desenharEqualizador(){
+
+    if(!analisador)
+        return;
+
+
+    analisador.getByteFrequencyData(
+        dados
+    );
+
+
+    const barras =
+    equalizador.children;
+
+
+    for(
+        let i=0;
+        i<barras.length;
+        i++
+    ){
+
+        const indice =
+        Math.floor(
+            i *
+            dados.length /
+            barras.length
+        );
+
+
+        const valor =
+        dados[indice] || 0;
+
+
+        const altura =
+        6 +
+        valor * .45;
+
+
+        barras[i].style.height =
+        altura + 'px';
+
+
+        barras[i].style.opacity =
+        .45 +
+        valor / 510;
+
+    }
+
+
+    animacao =
+    requestAnimationFrame(
+        desenharEqualizador
+    );
+
 }
-function pause(){
- audio.pause();cancelAnimationFrame(raf);btn.textContent='▶ OUVIR AGORA';status.textContent='Rádio pausada.'
+
+
+/* TOCAR */
+
+async function iniciarRadio(){
+
+    equalizador.classList.remove(
+        'caindo'
+    );
+
+
+    if(!streamUrl)
+        await atualizarRadio();
+
+
+    try{
+
+        if(!audio.src)
+            audio.src =
+            streamUrl;
+
+
+        const pronto =
+        await prepararEqualizador();
+
+
+        if(
+            contexto &&
+            contexto.state === 'suspended'
+        ){
+
+            await contexto.resume();
+
+        }
+
+
+        await audio.play();
+
+
+        if(pronto){
+
+            cancelAnimationFrame(
+                animacao
+            );
+
+
+            desenharEqualizador();
+
+
+            status.textContent =
+            '🔴 Rádio tocando • equalizador ativo';
+
+        }else{
+
+            status.textContent =
+            '🔴 Você está ouvindo a rádio!';
+
+        }
+
+
+        botao.textContent =
+        '⏸ PAUSAR RÁDIO';
+
+
+    }catch(e){
+
+        status.textContent =
+        'Clique novamente em OUVIR AGORA para iniciar.';
+
+    }
+
 }
-btn.onclick=()=>audio.paused?start():pause();
-audio.onplaying=()=>btn.textContent='⏸ PAUSAR RÁDIO';
-audio.onpause=()=>btn.textContent='▶ OUVIR AGORA';
-now();setInterval(now,15000);
+
+
+/* PAUSAR */
+
+function pausarRadio(){
+
+    audio.pause();
+
+
+    cancelAnimationFrame(
+        animacao
+    );
+
+
+    animacao =
+    null;
+
+
+    equalizador.classList.add(
+        'caindo'
+    );
+
+
+    botao.textContent =
+    '▶ OUVIR AGORA';
+
+
+    status.textContent =
+    'Rádio pausada.';
+
+}
+
+
+/* BOTAO */
+
+botao.addEventListener(
+    'click',
+    function(){
+
+        if(audio.paused){
+
+            iniciarRadio();
+
+        }else{
+
+            pausarRadio();
+
+        }
+
+    }
+);
+
+
+/* EVENTOS DO AUDIO */
+
+audio.addEventListener(
+    'playing',
+    function(){
+
+        botao.textContent =
+        '⏸ PAUSAR RÁDIO';
+
+        equalizador.classList.remove(
+            'caindo'
+        );
+
+    }
+);
+
+
+audio.addEventListener(
+    'pause',
+    function(){
+
+        botao.textContent =
+        '▶ OUVIR AGORA';
+
+    }
+);
+
+
+audio.addEventListener(
+    'error',
+    function(){
+
+        status.textContent =
+        'Não foi possível reproduzir o áudio neste momento.';
+
+    }
+);
+
+
+/* INICIALIZA */
+
+atualizarRadio();
+
+
+setInterval(
+    atualizarRadio,
+    15000
+);
+
 </script>
+
 </body>
 </html>
