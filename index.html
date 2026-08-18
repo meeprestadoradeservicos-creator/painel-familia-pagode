@@ -272,7 +272,68 @@ h1{
         transform:scale(1.6);
         opacity:.4;
     }
+/* V3.1 - ANIMAÇÃO AO VIVO */
+.ao-vivo{
+    transition:all .4s ease;
+}
 
+.ao-vivo.ativo{
+    color:#ff3030;
+    text-shadow:
+        0 0 8px rgba(255,30,30,.7),
+        0 0 22px rgba(255,30,30,.5);
+    animation:aoVivoBrilho 1.2s ease-in-out infinite alternate;
+}
+
+.ao-vivo.ativo .ponto{
+    transform:scale(1.3);
+    box-shadow:
+        0 0 10px #ff241b,
+        0 0 25px #ff241b;
+}
+
+@keyframes aoVivoBrilho{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.025);
+    }
+}
+
+/* Animação do DJ */
+.dj.entrou{
+    animation:entradaDJ .65s ease;
+}
+
+@keyframes entradaDJ{
+    0%{
+        opacity:0;
+        transform:translateY(10px) scale(.97);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+/* Animação da música */
+.musica.nova{
+    animation:novaMusica .7s ease;
+}
+
+@keyframes novaMusica{
+    0%{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 }
 
 /* INFORMAÇÕES */
@@ -730,7 +791,12 @@ document.getElementById('musica');
 
 const status =
 document.getElementById('status');
+const indicadorAoVivo =
+document.querySelector('.ao-vivo');
 
+let ultimoDJ = '';
+
+let ultimaMusica = '';
 
 let streamUrl = '';
 
@@ -768,41 +834,94 @@ function atualizar(dadosRadio){
     if(!dadosRadio) return;
 
     const song =
-    dadosRadio.now_playing?.song || {};
+        dadosRadio.now_playing?.song || {};
 
     const aoVivo =
-    dadosRadio.live?.is_live;
+        dadosRadio.live?.is_live;
 
     const nomeDJ =
-    dadosRadio.live?.streamer_name ||
-    dadosRadio.live?.streamer_display_name;
+        dadosRadio.live?.streamer_name ||
+        dadosRadio.live?.streamer_display_name ||
+        'DJ AO VIVO';
+
+    const artista =
+        song.artist || '';
+
+    const titulo =
+        song.title || 'Rádio ao vivo';
 
 
-    if(aoVivo && nomeDJ){
+    /* =========================
+       ANIMAÇÃO AO VIVO
+    ========================= */
 
-        dj.textContent =
-        '🎧 AO VIVO: ' + nomeDJ;
+    if(aoVivo){
+
+        indicadorAoVivo.classList.add('ativo');
+
+        if(nomeDJ !== ultimoDJ){
+
+            dj.classList.remove('entrou');
+
+            void dj.offsetWidth;
+
+            dj.textContent =
+                '🎧 AO VIVO: ' + nomeDJ;
+
+            dj.classList.add('entrou');
+
+            ultimoDJ = nomeDJ;
+        }
 
     }else{
 
-        dj.textContent =
-        '🎧 AUTO DJ / PROGRAMAÇÃO';
+        indicadorAoVivo.classList.remove('ativo');
+
+        if(ultimoDJ !== ''){
+
+            dj.classList.remove('entrou');
+
+            void dj.offsetWidth;
+
+            dj.textContent =
+                '🎧 AUTO DJ / PROGRAMAÇÃO';
+
+            dj.classList.add('entrou');
+
+            ultimoDJ = '';
+        }
 
     }
 
 
-    const artista =
-    song.artist || '';
+    /* =========================
+       ANIMAÇÃO DA NOVA MÚSICA
+    ========================= */
 
-    const titulo =
-    song.title || 'Rádio ao vivo';
+    const novaMusica =
+        (artista ? artista + ' — ' : '') +
+        titulo;
 
 
-    musica.textContent =
-    '🎵 ' +
-    (artista ? artista + ' — ' : '') +
-    titulo;
+    if(novaMusica !== ultimaMusica){
 
+        musica.classList.remove('nova');
+
+        void musica.offsetWidth;
+
+        musica.textContent =
+            '🎵 ' + novaMusica;
+
+        musica.classList.add('nova');
+
+        ultimaMusica = novaMusica;
+
+    }
+
+
+    /* =========================
+       LINK DA RÁDIO
+    ========================= */
 
     if(
         !streamUrl &&
@@ -810,19 +929,17 @@ function atualizar(dadosRadio){
     ){
 
         streamUrl =
-        dadosRadio.station.listen_url;
+            dadosRadio.station.listen_url;
 
         audio.src =
-        streamUrl;
+            streamUrl;
 
     }
 
 
     status.textContent =
-    'Rádio conectada • atualização automática';
-
+        'Rádio conectada • atualização automática';
 }
-
 
 /* BUSCA AZURACAST */
 
